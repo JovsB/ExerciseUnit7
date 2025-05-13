@@ -18,7 +18,8 @@ def clean_and_tokenize(text: str) -> List[str]:
     """
     text = text.lower()
     # Keep basic sentence structure, remove other punctuation
-    text = re.sub(r'[^a-z\\s.?!]', '', text) 
+    text = re.sub(r'[^a-z\s.?!]', '', text)
+
     # Tokenize by spaces and handle punctuation as separate tokens if needed
     # For simplicity, we split by space and filter empty strings.
     # NLTK word_tokenize is more robust but adds dependency for this specific part.
