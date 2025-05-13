@@ -5,6 +5,7 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Embedding, LSTM, Dense, TextVectorization
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 import re
+from sklearn.metrics import classification_report
 
 # --- Type Definitions ---
 from typing import List, Tuple, Dict, Any
@@ -120,6 +121,15 @@ def main() -> None:
     loss, accuracy = model.evaluate(x_test_padded, y_test, verbose=0)
     print(f"\\nTest Loss: {loss:.4f}")
     print(f"Test Accuracy: {accuracy:.4f}")
+
+    # Add Classification Report
+    print("\\nClassification Report (Neural Network):")
+    y_pred_proba: np.ndarray = model.predict(x_test_padded, verbose=0)
+    # Convert probabilities to class labels (0 or 1) based on a 0.5 threshold
+    y_pred_classes: np.ndarray = (y_pred_proba > 0.5).astype("int32")
+    # Ensure y_test is in the correct format if it's not already (e.g., 1D array)
+    # imdb.load_data already provides y_test as a 1D array of labels.
+    print(classification_report(y_test, y_pred_classes, target_names=['Negative', 'Positive']))
 
     # --- Example Prediction ---
     # Note: For real examples, we need the same preprocessing (tokenization, padding)
